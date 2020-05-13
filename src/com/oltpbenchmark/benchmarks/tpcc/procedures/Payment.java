@@ -195,7 +195,7 @@ public class Payment extends TPCCProcedure {
         rs.close();
         rs = null;
 
-        payUpdateWhse.setBigDecimal(1, BigDecimal.valueOf(paymentAmount));
+        payUpdateDist.setBigDecimal(1, BigDecimal.valueOf(paymentAmount));
         payUpdateDist.setInt(2, w_id);
         payUpdateDist.setInt(3, districtID);
         result = payUpdateDist.executeUpdate();
