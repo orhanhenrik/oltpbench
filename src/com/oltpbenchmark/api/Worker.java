@@ -461,8 +461,12 @@ public abstract class Worker<T extends BenchmarkModule> implements Runnable {
                         throw ex;
                     } else if (ex.getErrorCode() == 0 && ex.getSQLState() != null && ex.getSQLState().equals("XX000")) {
                         // Postgres no pinned buffers available
-                        throw ex;
-                        
+                        // throw ex;
+                        // TODO: Differentiate between postgres and yugabyte somehow?
+                        // Yugabyte: The request is duplicate, can ignore this error
+                        status = TransactionStatus.SUCCESS;
+                        continue;
+
                     // ------------------
                     // ORACLE
                     // ------------------
