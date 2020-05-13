@@ -59,15 +59,27 @@ public abstract class Loader<T extends BenchmarkModule> {
         
         @Override
         public final void run() {
-            try {
-                this.load(this.conn);
-                this.conn.commit();
-            } catch (SQLException ex) {
-                SQLException next_ex = ex.getNextException();
-                String msg = String.format("Unexpected error when loading %s database",
-                                           Loader.this.benchmark.getBenchmarkName().toUpperCase());
-                LOG.error(msg, next_ex);
-                throw new RuntimeException(ex);
+            int i = 0;
+            while(true) {
+                i++;
+                try {
+                    this.load(this.conn);
+                    this.conn.commit();
+                    LOG.warn("Finished load");
+                    break;
+                } catch (SQLException ex) {
+                    LOG.error("Failure during loading!");
+                    SQLException next_ex = ex.getNextException();
+                    LOG.error(ex.getErrorCode() + " " + ex.getSQLState());
+                    LOG.error(ex);
+                    LOG.error(next_ex);
+                    LOG.error("i is " + i);
+                    if (i >= 10) {
+                        String msg = String.format("Unexpected error when loading %s database",
+                                                Loader.this.benchmark.getBenchmarkName().toUpperCase());
+                        throw new RuntimeException(ex);
+                    }
+                }
             }
         }
 

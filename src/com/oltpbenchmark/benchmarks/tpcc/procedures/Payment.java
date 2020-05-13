@@ -22,6 +22,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Random;
+import java.math.BigDecimal;
 
 import org.apache.log4j.Logger;
 
@@ -173,7 +174,7 @@ public class Payment extends TPCCProcedure {
         String w_street_1, w_street_2, w_city, w_state, w_zip, w_name;
         String d_street_1, d_street_2, d_city, d_state, d_zip, d_name;
 
-        payUpdateWhse.setDouble(1, paymentAmount);
+        payUpdateWhse.setBigDecimal(1, BigDecimal.valueOf(paymentAmount));
         payUpdateWhse.setInt(2, w_id);
         // MySQL reports deadlocks due to lock upgrades:
         // t1: read w_id = x; t2: update w_id = x; t1 update w_id = x
@@ -194,7 +195,7 @@ public class Payment extends TPCCProcedure {
         rs.close();
         rs = null;
 
-        payUpdateDist.setDouble(1, paymentAmount);
+        payUpdateWhse.setBigDecimal(1, BigDecimal.valueOf(paymentAmount));
         payUpdateDist.setInt(2, w_id);
         payUpdateDist.setInt(3, districtID);
         result = payUpdateDist.executeUpdate();

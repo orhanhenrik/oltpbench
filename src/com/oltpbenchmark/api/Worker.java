@@ -428,7 +428,9 @@ public abstract class Worker<T extends BenchmarkModule> implements Runnable {
 			    this.conn.rollback();
 			}
 		    }
-
+                    if (ex.getSQLState() != null) {
+                        LOG.warn(ex.getErrorCode() + " " + ex.getSQLState());
+                    }
                     if (ex.getSQLState() == null) {
                         continue;
                     // ------------------
