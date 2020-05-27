@@ -74,7 +74,7 @@ public abstract class Loader<T extends BenchmarkModule> {
                     LOG.error(ex);
                     LOG.error(next_ex);
                     LOG.error("i is " + i);
-                    if (i >= 10) {
+                    if (i >= 3) {
                         String msg = String.format("Unexpected error when loading %s database",
                                                 Loader.this.benchmark.getBenchmarkName().toUpperCase());
                         throw new RuntimeException(ex);
